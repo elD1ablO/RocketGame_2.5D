@@ -41,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyRotation(float rotationThisFrame)
     {
+        rb.freezeRotation = true;  //freezing rotation to rotate manually
         transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
+        rb.freezeRotation = false; // un-freeze rotation 
     }
 }
