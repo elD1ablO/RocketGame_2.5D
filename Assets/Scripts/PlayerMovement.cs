@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     
     Rigidbody rb;
     [SerializeField] float mainThrust;
+    [SerializeField] float rotationThrust;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -30,11 +31,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A))
         {
-
+            ApplyRotation(rotationThrust);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-
+            ApplyRotation(-rotationThrust);
         }
+    }
+
+    void ApplyRotation(float rotationThisFrame)
+    {
+        transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
     }
 }
