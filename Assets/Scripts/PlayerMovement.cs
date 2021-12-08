@@ -1,19 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
+
 
 public class PlayerMovement : MonoBehaviour
 {
     
     Rigidbody rb;
-    [SerializeField] float mainThrust;
+    AudioSource audioSource;
+
+    [Title("Thrust")]
+    [SerializeField]  float mainThrust;
     [SerializeField] float rotationThrust;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
-
-    // Update is called once per frame
+       
     void Update()
     {
         ProcessThrust();
@@ -25,8 +30,15 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
-        }        
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+        }
+        else
+            audioSource.Stop();
     }
+
     void ProcessRotation()
     {
         if (Input.GetKey(KeyCode.A))
@@ -43,6 +55,6 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.freezeRotation = true;  //freezing rotation to rotate manually
         transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
-        rb.freezeRotation = false; // un-freeze rotation 
+        rb.freezeRotation = false; // unfreeze rotation 
     }
 }
