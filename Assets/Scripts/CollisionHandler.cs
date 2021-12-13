@@ -3,8 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
+    [SerializeField] float delay = 1.5f;
+    
     void OnCollisionEnter(Collision collision)
-    {
+    {        
         switch (collision.gameObject.tag)
         {
             case "Friendly":
@@ -12,16 +14,25 @@ public class CollisionHandler : MonoBehaviour
                 break;
             case "Finish":
                 print("You win");
-                LoadNextLevel();
-                break;
-            case "Fuel":
-                print("You picked a fuel");
+                StartSuccess();
                 break;
             default:
                 print("Looser");
-                ReloadLevel();
+                StartCrash();
                 break;
         }
+    }
+
+    void StartCrash()
+    {
+        GetComponent<PlayerMovement>().enabled = false;
+        Invoke("ReloadLevel", delay);
+    }
+
+    void StartSuccess()
+    {
+        GetComponent<PlayerMovement>().enabled = false;
+        Invoke("LoadNextLevel", delay);
     }
 
     void ReloadLevel()
@@ -30,7 +41,7 @@ public class CollisionHandler : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex);
     }
     void LoadNextLevel()
-    {
+    {        
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
         if(nextSceneIndex == SceneManager.sceneCountInBuildSettings)
