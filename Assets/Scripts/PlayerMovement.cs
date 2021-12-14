@@ -11,8 +11,12 @@ public class PlayerMovement : MonoBehaviour
     AudioSource audioSource;
 
     [Title("Thrust")]
-    [SerializeField]  float mainThrust;
+    [SerializeField] float mainThrust;
     [SerializeField] float rotationThrust;
+    
+    [Title("Sounds")]
+    [SerializeField] AudioClip mainEngine;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -32,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
             rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
             if (!audioSource.isPlaying)
             {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
             }
         }
         else
