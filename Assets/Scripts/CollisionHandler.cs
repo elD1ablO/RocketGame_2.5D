@@ -1,14 +1,19 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Sirenix.OdinInspector;
 
 public class CollisionHandler : MonoBehaviour
 {
     [SerializeField] float delay = 1.5f;
 
+    [Title("Sounds")]
     [SerializeField] AudioClip crashSound;
     [SerializeField] AudioClip winSound;
-
     AudioSource audioSource;
+
+    [Title("Particles")]
+    [SerializeField] ParticleSystem crashParticles;
+    [SerializeField] ParticleSystem winParticles;
 
     bool isTransitioning = false;
     private void Start()
@@ -38,7 +43,8 @@ public class CollisionHandler : MonoBehaviour
     void StartCrash()
     {        
         audioSource.Stop();
-        audioSource.PlayOneShot(crashSound);              
+        audioSource.PlayOneShot(crashSound);
+        crashParticles.Play();
         GetComponent<PlayerMovement>().enabled = false;
         Invoke("ReloadLevel", delay);
         isTransitioning = true;
@@ -47,7 +53,8 @@ public class CollisionHandler : MonoBehaviour
     void StartSuccess()
     {
         audioSource.Stop();
-        audioSource.PlayOneShot(winSound);              
+        audioSource.PlayOneShot(winSound);    
+        winParticles.Play();
         GetComponent<PlayerMovement>().enabled = false;
         Invoke("LoadNextLevel", delay);
         isTransitioning = true;
