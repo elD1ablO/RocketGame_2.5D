@@ -25,13 +25,11 @@ public class CollisionHandler : MonoBehaviour
                 print("standing on a pad");
                 break;
             case "Finish":
-                print("You win");
-                
+                print("You win");                
                 StartSuccess();
                 break;
             default:
-                print("Looser");
-                
+                print("Looser");                
                 StartCrash();
                 break;
         }
