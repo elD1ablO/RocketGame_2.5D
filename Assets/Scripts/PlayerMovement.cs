@@ -17,6 +17,11 @@ public class PlayerMovement : MonoBehaviour
     [Title("Sounds")]
     [SerializeField] AudioClip mainEngine;
 
+    [Title("ThrustFlames")]
+    [SerializeField] ParticleSystem mainThrustParticles;
+    [SerializeField] ParticleSystem leftThrustParticles;
+    [SerializeField] ParticleSystem rightThrustParticles;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -32,15 +37,23 @@ public class PlayerMovement : MonoBehaviour
     void ProcessThrust()
     {
         if (Input.GetKey(KeyCode.Space))
-        {
+        {            
             rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
             if (!audioSource.isPlaying)
             {
                 audioSource.PlayOneShot(mainEngine);
             }
+            if (!mainThrustParticles.isPlaying)
+            {
+                mainThrustParticles.Play();
+            }            
         }
         else
+        {
             audioSource.Stop();
+            mainThrustParticles.Stop();
+        }            
+            
     }
 
     void ProcessRotation()
@@ -48,10 +61,23 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             ApplyRotation(rotationThrust);
+            if (!leftThrustParticles.isPlaying)
+            {
+                leftThrustParticles.Play();
+            }
         }
         else if (Input.GetKey(KeyCode.D))
         {
             ApplyRotation(-rotationThrust);
+            if (!rightThrustParticles.isPlaying)
+            {
+                rightThrustParticles.Play();
+            }
+        }
+        else
+        {
+            leftThrustParticles.Stop();
+            rightThrustParticles.Stop();
         }
     }
 
