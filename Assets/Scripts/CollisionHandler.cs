@@ -16,13 +16,32 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] ParticleSystem winParticles;
 
     bool isTransitioning = false;
-    private void Start()
+    bool collisionDisabled = false;
+    void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
+
+    void Update()
+    {
+        RespondToDebugKeys();
+    }
+
+    void RespondToDebugKeys()
+    {
+        if (Input.GetKey(KeyCode.L))
+        {
+            LoadNextLevel();
+        }
+        else if (Input.GetKey(KeyCode.C))
+        {
+            collisionDisabled = !collisionDisabled;  //toggle collision
+        }
+    }
+
     void OnCollisionEnter(Collision collision)
     {        
-        if (isTransitioning) return;
+        if (isTransitioning || collisionDisabled) return;
 
         switch (collision.gameObject.tag)
         {
